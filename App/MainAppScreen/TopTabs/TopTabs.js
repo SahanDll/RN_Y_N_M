@@ -7,14 +7,13 @@ export default class TopTabs extends Component {
   constructor() {
     super();
     this.state = {
-      currentTabIndex: 0, // eslint-disable-line
-      tabsStyles: [GLOBAL.mainTopTabsStyle.topTabButtonOn,
-        GLOBAL.mainTopTabsStyle.topTabButtonOff, GLOBAL.mainTopTabsStyle.topTabButtonOff],
+      currentTabIndex: 1, // eslint-disable-line
+      tabsStyles: [GLOBAL.mainTopTabsStyle.topTabButtonOff,
+        GLOBAL.mainTopTabsStyle.topTabButtonOn, GLOBAL.mainTopTabsStyle.topTabButtonOff],
     };
   }
 
   clickFunction(index) {
-    this.props.switch(index);
     if (index === 0) {
       this.state.tabsStyles = [GLOBAL.mainTopTabsStyle.topTabButtonOn,
         GLOBAL.mainTopTabsStyle.topTabButtonOff, GLOBAL.mainTopTabsStyle.topTabButtonOff];
@@ -34,7 +33,7 @@ export default class TopTabs extends Component {
           full
           activeOpacity={1}
           style={this.state.tabsStyles[0]}
-          onPress={this.clickFunction(0)}
+          onPress={this.props.switch(0)}
         >
           <Text style={GLOBAL.topTabsStyle.text} uppercase={false}>Settings</Text>
         </Button>
@@ -42,7 +41,7 @@ export default class TopTabs extends Component {
           full
           activeOpacity={1}
           style={this.state.tabsStyles[1]}
-          onPress={this.clickFunction(1)}
+          onPress={this.props.switch(1)}
         >
           <Text style={GLOBAL.topTabsStyle.text} uppercase={false}>Match</Text>
         </Button>
@@ -50,7 +49,7 @@ export default class TopTabs extends Component {
           full
           activeOpacity={1}
           style={this.state.tabsStyles[2]}
-          onPress={this.clickFunction(2)}
+          onPress={this.props.switch(2)}
         >
           <Text style={GLOBAL.topTabsStyle.text} uppercase={false}>Chat</Text>
         </Button>

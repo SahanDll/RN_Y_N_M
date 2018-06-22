@@ -18,6 +18,7 @@ export default class LogSignScreen extends Component {
   };
 
   switchScreens = index => () => {
+    GLOBAL.showToast(`switch to ${index}`);
     if (this.topTabs.state.currentTabIndex !== index) {
       if (index === 0) {
         this.loginScreen.animationView.fadeInLeft(600).then(this.changeZindex);

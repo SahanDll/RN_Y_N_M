@@ -29,7 +29,7 @@ export default class LoginButtons extends Component {
       <View style={{ marginTop: height / 25 }}>
         <LoginButton clear={this.props.clear} ref={(ref) => { this.loginButton = ref; }} />
         <GuestButton move={this.props.move} />
-        <View style={{ flexDirection: 'row', marginTop: height / 100 }}>
+        <View style={{ flexDirection: 'row', marginTop: height / 12 }}>
           <FacebookButton special />
           <GoogleButton special />
         </View>

@@ -8,13 +8,19 @@ import TopTabs from '../TopTabs/TopTabs';
 import Email from '../InputComponents/Email';
 import Password from '../InputComponents/Password';
 
+const hide = { from: { opacity: 0 }, to: { opacity: 0 } };
 export default class SettingsScreen extends Component {
+
   constructor() {
     super();
     this.state = {
       inputs: [],
     };
   }
+
+    updateState = () => {
+
+    };
 
     changeInputFocus = index => () => {
       if (index === 0) {
@@ -25,21 +31,22 @@ export default class SettingsScreen extends Component {
     render() {
       return (
         <Animatable.View
-          animation="fadeInRight"
-          delay={1200}
-          duration={700}
+          animation={hide}
+          duration={0}
           ref={(ref) => { this.animationView = ref; }}
-          style={GLOBAL.loginScreenStyle.mainView}
+          style={{
+                  zIndex: this.state.zIndex, position: 'absolute', flex: 1, backgroundColor: 'transparent',
+              }}
         >
           <Form style={GLOBAL.loginScreenStyle.form}>
             <Email
               changeFocus={this.changeInputFocus(0)}
-              update={this.updateCanLoginState}
+              update={this.updateState}
               ref={(ref) => { this.state.inputs[0] = ref; }}
             />
             <Password
               changeFocus={this.changeInputFocus(1)}
-              update={this.updateCanLoginState}
+              update={this.updateState}
               ref={(ref) => { this.state.inputs[1] = ref; }}
             />
           </Form>

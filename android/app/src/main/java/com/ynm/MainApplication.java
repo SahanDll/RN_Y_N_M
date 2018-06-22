@@ -1,4 +1,4 @@
-package com.logsignscreen;
+package com.ynm;
 
 import android.app.Application;
 

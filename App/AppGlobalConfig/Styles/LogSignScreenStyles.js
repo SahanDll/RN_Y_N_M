@@ -32,8 +32,20 @@ class LogSignScreenStyles {
         icon: {
           position: 'absolute', width: companyIconWidth, tintColor: mainThemeColor,
         },
+        databack: {
+          width: companyIconWidth, alignItems: 'center', justifyContent: 'center',
+        },
         logo: {
-          position: 'absolute', width: companyIconWidth,
+          width: width / 4, height: height / 5, alignSelf: 'flex-start',
+        },
+        logobg: {
+          width, height: companyBannerHeight, justifyContent: 'center',
+        },
+        sample: {
+          alignItems: 'center', width: width / 3, height: height / 2.5,
+        },
+        samplebg: {
+          width: width / 3, height: height / 2.5, alignSelf: 'center',
         },
       });
 
@@ -106,7 +118,7 @@ class LogSignScreenStyles {
       GLOBAL.keyboardAvoidView = {
         style: { flex: 1 },
         resetScrollToCoords: { x: 0, y: 0 },
-        contentContainerStyle: { backgroundColor: appMainColor },
+        contentContainerStyle: { backgroundColor: 'transparent' },
         extraHeight: height / 10,
         keyboardOpeningTime: 0,
         enableOnAndroid: true,

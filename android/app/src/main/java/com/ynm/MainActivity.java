@@ -1,4 +1,4 @@
-package com.logsignscreen;
+package com.ynm;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
