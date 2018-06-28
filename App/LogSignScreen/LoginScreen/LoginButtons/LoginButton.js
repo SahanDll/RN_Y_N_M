@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import { Text, Spinner, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { authenticate, getTest } from '../../../Service/ApiCalls/Login';
 
 export default class LoginButton extends Component {
   constructor() {
@@ -28,6 +29,10 @@ export default class LoginButton extends Component {
   };
 
   loginUser = () => {
+    authenticate(this.state.email, this.state.password)
+      .then((data) => {
+        GLOBAL.showToast(JSON.stringify(data));
+      });
     if (!this.state.isLogin) {
       if (!this.state.canLogin) {
         GLOBAL.showToast(language.checkFields);

@@ -13,9 +13,18 @@ import SettingsScreen from './Settings/SettingsScreen';
 const iconWidth = (width * 52) / 100;
 const iconImage = require('../../assets/sample.png');
 
+let count = 0;
+
 export default class MainAppScreen extends Component {
   moveToLogSignScreen = () => {
-    Actions.pop();
+    // Actions.pop();
+    /*    Actions.popTo('logSignScreen');
+    setTimeout(() => {
+      Actions.refresh();
+      GLOBAL.showToast('Refreshed');
+    }, 500); */
+    count += 1;
+    Actions.pop({ refresh: { test: count } });
   };
 
     changeZindex = () => {

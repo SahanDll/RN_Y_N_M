@@ -4,14 +4,23 @@ import Swipeable from 'react-native-swipeable';
 import { Card } from 'react-native-elements';
 import Lightbox from 'react-native-lightbox';
 
-const data = require('../../../assets/sample.png');
-
 import Sample from '../Data/Sample';
+
+const data = require('../../../assets/sample.png');
+const data1 = require('../../../assets/sample1.png');
+const data2 = require('../../../assets/sample2.png');
+const data3 = require('../../../assets/sample3.png');
+const data4 = require('../../../assets/sample4.png');
+const load = require('../../../assets/load.png');
+
+let imageItem = 0;
+let render = true;
+let images = [];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 0,
   },
   listItem: {
     alignItems: 'center',
@@ -41,12 +50,12 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00BCD4',
-    height: 300,
-    width: '90%',
+    backgroundColor: '#13B9AB',
+    height: '80%',
+    width: '80%',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff',
+    borderWidth: 5,
+    borderColor: '#00BCD4',
 
   },
 
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
 
     fontSize: 20,
     marginBottom: 20,
-    color: '#fff',
+    color: '#405FA6',
     padding: 20,
     textAlign: 'center',
 
@@ -68,7 +77,15 @@ export default class Items extends Component {
     };
 
     setModalVisible(visible) {
-      this.setState({ modalVisible: visible });
+      if (render) {
+        this.setState({ modalVisible: visible });
+      } else {
+        images = [data, data1, data2, data3, data4];
+        render = true;
+        imageItem = 0;
+        this.setState(this.state);
+        GLOBAL.showToast('Data Refreshing');
+      }
     }
 
     handleScroll = () => {
@@ -80,7 +97,9 @@ export default class Items extends Component {
     };
 
     render() {
+      images = [data, data1, data2, data3, data4];
       const { currentlyOpenSwipeable } = this.state;
+      // noinspection JSAnnotator
       const itemProps = {
         onOpen: (event, gestureState, swipeable) => {
           if (currentlyOpenSwipeable && currentlyOpenSwipeable !== swipeable) {
@@ -91,13 +110,14 @@ export default class Items extends Component {
         },
         onClose: () => this.setState({ currentlyOpenSwipeable: null }),
         onPressDown: () => this.setModalVisible(true),
+        onChange: () => { this.setState(this.state); },
       };
 
       return (
         <ScrollView onScroll={this.handleScroll} style={styles.container}>
           <View style={styles.MainContainer}>
             <Modal
-              transparent={false}
+              transparent
               animationType="slide"
               visible={this.state.modalVisible}
               onRequestClose={() => { this.setModalVisible(!this.state.modalVisible); }}
@@ -108,19 +128,26 @@ export default class Items extends Component {
                     style={styles.TextStyle}
                   >Hi Im Jenny
                   </Text>
-                  <Button
-                    title="Close"
-                    onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
-                  />
-                  <Button
-                    title="Detail"
-                    onPress={() => { showAlertDialog(); }}
-                  />
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                    <View style={{ margin: 5 }}>
+                      <Button
+                        title="Close"
+                        onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
+                      />
+                    </View>
+                    <View style={{ margin: 5 }}>
+                      <Button
+                        title="Detail"
+                        style={{ margin: 5 }}
+                        onPress={() => { showAlertDialog(); }}
+                      />
+                    </View>
+                  </View>
                 </View>
               </View>
             </Modal>
           </View>
-          <Example1 {...itemProps} />
+          <Example1 {...itemProps} ref={(ref) => { this.example1 = ref; }} />
 
           {/*          <Example2 {...itemProps} />
           <Example3 {...itemProps} /> */}
@@ -154,44 +181,90 @@ function right() {
 }
 
 function leftComplete() {
-  GLOBAL.showToast('Rejected');
+  imageItem += 1;
+  if (images.length <= imageItem) {
+    render = false;
+  }
+  GLOBAL.showToast(`Rejected ${imageItem} ${render}`);
 }
 
 function rightComplete() {
-  GLOBAL.showToast('Accepted');
+  imageItem += 1;
+  if (images.length <= imageItem) {
+    render = false;
+  }
+  GLOBAL.showToast(`Accepted ${imageItem} ${render}`);
 }
 
 function showModel(value) {
   this.setModalVisible(value);
 }
 
-function Example1({ onOpen, onClose, onPressDown }) {
+function Example1({
+  onOpen, onClose, onPressDown, onChange,
+}) {
+  if (render) {
+    return (
+      <Swipeable
+        leftContent={(
+          <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
+            <Sample action="REJECT" color="#B91321" image={images[imageItem]} ref={(ref) => { this.sampleL = ref; }} />
+          </View>
+                )}
+        rightContent={(
+          <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
+            <Sample action="ACCEPT" color="#0ACD13" image={images[imageItem]} ref={(ref) => { this.sampleR = ref; }} />
+          </View>
+                )}
+
+                /*      onLeftActionActivate={() => left()}
+                      onRightActionActivate={() => right()} */
+        onLeftActionRelease={() => leftComplete()}
+        onRightActionRelease={() => rightComplete()}
+        onLeftActionComplete={onChange}
+        onRightActionComplete={onChange}
+        // onSwipeComplete={onChange}
+      >
+        <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
+          <TouchableOpacity
+            onPress={onPressDown}
+            style={styles.button}
+          >
+            <Sample
+              action="I Like You"
+              color="#eee"
+              image={images[imageItem]}
+              ref={(ref) => { this.sample = ref; }}
+            />
+          </TouchableOpacity >
+        </View>
+      </Swipeable>
+    );
+  }
   return (
-    <Swipeable
-      leftContent={(
-        <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
-          <Sample action="REJECT" color="#B91321" />
-        </View>
-            )}
-      rightContent={(
-        <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
-          <Sample action="ACCEPT" color="#0ACD13" />
-        </View>
-      )}
-/*      onLeftActionActivate={() => left()}
-      onRightActionActivate={() => right()} */
-      onLeftActionComplete={() => leftComplete()}
-      onRightActionComplete={() => rightComplete()}
-    >
+    <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
+      <Text style={{
+                  backgroundColor: 'transparent',
+                  textAlign: 'center',
+          marginTop: 10,
+          color: '#eee',
+              }}
+      >Click to refresh
+      </Text>
       <View style={[styles.listItem, { backgroundColor: 'transparent' }]}>
         <TouchableOpacity
           onPress={onPressDown}
           style={styles.button}
         >
-          <Sample action="I Like You" color="#eee" />
+          <Sample
+            action="No Matching Profiles Found Near by"
+            color="#eee"
+            image={load}
+            ref={(ref) => { this.sampleL = ref; }}
+          />
         </TouchableOpacity >
       </View>
-    </Swipeable>
+    </View>
   );
 }
 

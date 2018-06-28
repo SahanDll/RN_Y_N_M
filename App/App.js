@@ -64,12 +64,14 @@ export default class App extends Component {
                 key="logSignScreen"
                 component={LogSignScreen}
                 hideNavBar
+                refresh="true"
                 initial
               />
               <Scene
                 key="mainAppScreen"
                 component={MainAppScreen}
                 hideNavBar
+                refresh="true"
               />
             </Scene>
           </Router>

@@ -17,8 +17,14 @@ export default class LogSignScreen extends Component {
     this.signInScreen.changeZindex();
   };
 
+  componentWillReceiveProps() {
+    // GLOBAL.showToast('Props');
+    this.companyBanner.reRender();
+  }
+
   switchScreens = index => () => {
-    GLOBAL.showToast(`switch to ${index}`);
+    // this.companyBanner.reRender();
+    // GLOBAL.showToast(`switch to ${index}`);
     if (this.topTabs.state.currentTabIndex !== index) {
       if (index === 0) {
         this.loginScreen.animationView.fadeInLeft(600).then(this.changeZindex);
@@ -54,7 +60,7 @@ export default class LogSignScreen extends Component {
         {...GLOBAL.keyboardAvoidView}
         ref={(ref) => { this.keyboardAvoidView = ref; }}
       >
-        <CompanyBanner />
+        <CompanyBanner ref={(ref) => { this.companyBanner = ref; }} />
         <TopTabs
           ref={(ref) => { this.topTabs = ref; }}
           switch={this.switchScreens}

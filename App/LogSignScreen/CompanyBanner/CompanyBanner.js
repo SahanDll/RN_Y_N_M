@@ -18,8 +18,13 @@ export default class CompanyBanner extends Component {
   constructor() {
     super();
     this.state = {
-      gradient: ['#F972F4', '#F0466B'],
+      gradient: ['#E75A79', '#A19497', '#DAD5D6'],
     };
+  }
+
+  reRender() {
+    this.animatedTypingText.reStart();
+    this.setState({ gradient: ['#E75A79', '#A19497', '#DAD5D6'] });
   }
 
   render() {
@@ -30,7 +35,7 @@ export default class CompanyBanner extends Component {
         duration={700}
       >
         <LinearGradient
-          colors={['#E75A79', '#A19497', '#DAD5D6']}
+          colors={this.state.gradient}
           style={styles.container}
         >
           {/*          <ImageBackground
@@ -65,6 +70,7 @@ export default class CompanyBanner extends Component {
               text="There is only one happiness in this life, to love and be loved..."
               TextColor="#271C3B"
               AnimatedTextSize={16}
+              ref={(ref) => { this.animatedTypingText = ref; }}
             />
           </View>
         </LinearGradient>

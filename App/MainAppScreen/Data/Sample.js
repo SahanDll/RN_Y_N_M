@@ -3,19 +3,55 @@ import { ImageBackground, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { View, Text } from 'react-native-animatable';
 import PropTypes from 'prop-types';
+
 const bgImage = require('../../../assets/sbg.png');
-const data = require('../../../assets/sample.png');
+const load = require('../../../assets/load.png');
 
 
+const images = [];
 export default class Sample extends Component {
   constructor() {
     super();
     this.state = {
       gradient: [`${appMainColor}DC`, `${gradient1}DD`],
+      imageItem: 0,
     };
   }
 
+  setImageItem() {
+    this.setState({ imageItem: this.state.imageItem + 1 });
+  }
+
+  getStatus() {
+    return images.length <= this.state.imageItem;
+  }
+
   render() {
+    if (this.props.image === null || this.props.image === '') {
+      GLOBAL.showToast('Need to refresh');
+      return (
+        <View>
+          <ImageBackground
+            source={bgImage}
+            resizeMode="center"
+            style={companyBannerStyle.samplebg}
+          >
+            <LinearGradient colors={this.state.gradient} />
+            <Image source={load} resizeMode="contain" style={companyBannerStyle.sample} />
+          </ImageBackground>
+          <View>
+            <Text style={{
+                            color: this.props.color,
+                            backgroundColor: 'transparent',
+                            textAlign: 'center',
+                        }}
+            >No Matching Profiles Found
+            </Text>
+          </View>
+        </View>
+      );
+    }
+
     return (
       <View>
         <ImageBackground
@@ -24,7 +60,7 @@ export default class Sample extends Component {
           style={companyBannerStyle.samplebg}
         >
           <LinearGradient colors={this.state.gradient} />
-          <Image source={data} resizeMode="center" style={companyBannerStyle.sample} />
+          <Image source={this.props.image} resizeMode="contain" style={companyBannerStyle.sample} />
         </ImageBackground>
         <View>
           <Text style={{
@@ -57,9 +93,11 @@ Sample.propTypes =
     {
       action: PropTypes.string,
       color: PropTypes.string,
+      image: PropTypes.string,
     };
 Sample.defaultProps =
     {
       action: '',
       color: 'transparent',
+      image: '',
     };

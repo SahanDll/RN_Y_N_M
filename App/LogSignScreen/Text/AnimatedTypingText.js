@@ -29,6 +29,17 @@ export default class AnimatedTypingText extends Component<{}> {
     this.AnimatedblinkingCursor();
   }
 
+  reStart() {
+    this.index = 0;
+    this.timer = -1;
+    this.blinking_cursor = -1;
+    this.state.text = '';
+    this.setState({ text: '' });
+    this.setState(this.state);
+    this.StartAnimatedTyping();
+    this.AnimatedblinkingCursor();
+  }
+
     AnimatedblinkingCursor = () => {
       this.blinking_cursor = setInterval(() => {
         if (this.animatedText) {
@@ -46,7 +57,7 @@ export default class AnimatedTypingText extends Component<{}> {
 
       this.timer = -1;
 
-      if (this.index < this.props.text.length) {
+      if (this.index <= this.props.text.length) {
         if (this.animatedText) {
           this.setState({ text: this.state.text + this.props.text.charAt(this.index) }, () => {
             this.index += 1;
