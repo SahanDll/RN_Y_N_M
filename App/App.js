@@ -8,8 +8,11 @@ import AppGlobalConfig from './AppGlobalConfig/AppConfig';
 import LogSignScreen from './LogSignScreen/LogSignScreen';
 import MainAppScreen from './MainAppScreen/MainAppScreen';
 
+import { configure, actions } from './Notification/PushNotifications';
+
 
 let context;
+
 
 GLOBAL.showToast = (message) => {
   context.toast.show(message, DURATION.LENGTH_LONG);
@@ -26,6 +29,8 @@ export default class App extends Component {
     this.state = {
       initLoaded: false,
     };
+    configure();
+    actions();
     GLOBAL.AppGlobalConfig = AppGlobalConfig;
     AppGlobalConfig.init().finally(() => {
       SplashScreen.hide();

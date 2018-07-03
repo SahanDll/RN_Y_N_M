@@ -4,6 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { Text, Spinner, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { authenticate, getTest } from '../../../Service/ApiCalls/Login';
+import { setAuthenticated } from '../../../AppGlobalConfig/Common';
 
 export default class LoginButton extends Component {
   constructor() {
@@ -20,7 +21,7 @@ export default class LoginButton extends Component {
     this.setState({ canLogin: can });
   }
 
-  updateEmail(e, p) {
+  updateData(e, p) {
     this.setState({ email: e, password: p });
   }
 
@@ -29,25 +30,22 @@ export default class LoginButton extends Component {
   };
 
   loginUser = () => {
-    authenticate(this.state.email, this.state.password)
-      .then((data) => {
-        GLOBAL.showToast(JSON.stringify(data));
-      });
     if (!this.state.isLogin) {
       if (!this.state.canLogin) {
         GLOBAL.showToast(language.checkFields);
       } else {
         this.setState({ isLogin: true });
         setTimeout(() => {
-          GLOBAL.showToast(`Authenticating for email : ${this.state.email}`);
-          if (this.state.email === 'sahan' && this.state.password === '123') {
-            this.moveToMainAppScreen();
-            GLOBAL.showToast('Login Successful');
-          } else {
-            setTimeout(() => {
-              GLOBAL.showToast('Login Failed');
-            }, 2000);
-          }
+          authenticate(this.state.email, this.state.password)
+            .then((data) => {
+              if (data.status) {
+                GLOBAL.showToast(data.message);
+                setAuthenticated(true);
+                this.moveToMainAppScreen();
+              } else {
+                GLOBAL.showToast(data.message);
+              }
+            });
           this.props.clear();
           this.setState({ isLogin: false, canLogin: false });
         }, 1000);

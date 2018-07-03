@@ -88,6 +88,14 @@ export default class Items extends Component {
       }
     }
 
+    resetImages = () => {
+      images = [data, data1, data2, data3, data4];
+      render = true;
+      imageItem = 0;
+      this.setState(this.state);
+      GLOBAL.showToast('Data Reset');
+    };
+
     handleScroll = () => {
       const { currentlyOpenSwipeable } = this.state;
 

@@ -5,6 +5,8 @@ import { Actions } from 'react-native-router-flux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { setAuthenticated, getAuthenticated } from '../AppGlobalConfig/Common';
+
 import TopTabs from './TopTabs/TopTabs';
 import ChatScreen from './Chat/ChatScreen';
 import MatchScreen from './Match/MatchScreen';
@@ -17,18 +19,24 @@ let count = 0;
 
 export default class MainAppScreen extends Component {
   moveToLogSignScreen = () => {
-    // Actions.pop();
-    /*    Actions.popTo('logSignScreen');
-    setTimeout(() => {
-      Actions.refresh();
-      GLOBAL.showToast('Refreshed');
-    }, 500); */
+    if (getAuthenticated()) {
+      this.matchScreen.resetItems();
+      setAuthenticated(false);
+    }
     count += 1;
     Actions.pop({ refresh: { test: count } });
   };
 
-    changeZindex = () => {
-      this.signInScreen.changeZindex();
+    changeSettingZindex = (i) => {
+      this.settingsScreen.changeZindex(i);
+    };
+
+    changeMatchZindex = (i) => {
+      this.matchScreen.changeZindex(i);
+    };
+
+    changeChatZindex = (i) => {
+      this.chatScreen.changeZindex(i);
     };
 
     moveToMainAppScreen = () => {
@@ -40,17 +48,17 @@ export default class MainAppScreen extends Component {
 
       if (this.topTabs.state.currentTabIndex !== index) {
         if (index === 0) {
-          this.settingsScreen.animationView.fadeInLeft(600).then(this.changeZindex);
-          this.matchScreen.animationView.fadeOutLeft(400);
-          this.chatScreen.animationView.fadeOutRight(400);
+          this.settingsScreen.animationView.fadeInRight(1200).then(this.changeSettingZindex(1));
+          this.matchScreen.animationView.fadeOutLeft(600).then(this.changeMatchZindex(0));
+          this.chatScreen.animationView.fadeOutRight(600).then(this.changeChatZindex(0));
         } else if (index === 1) {
-          this.settingsScreen.animationView.fadeOutLeft(400);
-          this.matchScreen.animationView.fadeInLeft(600).then(this.changeZindex);
-          this.chatScreen.animationView.fadeOutRight(400);
+          this.settingsScreen.animationView.fadeOutLeft(600).then(this.changeSettingZindex(0));
+          this.matchScreen.animationView.fadeInLeft(1200).then(this.changeMatchZindex(1));
+          this.chatScreen.animationView.fadeOutRight(600).then(this.changeChatZindex(0));
         } else {
-          this.settingsScreen.animationView.fadeOutLeft(400);
-          this.matchScreen.animationView.fadeOutRight(400);
-          this.chatScreen.animationView.fadeInRight(600).then(this.changeZindex);
+          this.settingsScreen.animationView.fadeOutLeft(600).then(this.changeSettingZindex(0));
+          this.matchScreen.animationView.fadeOutRight(600).then(this.changeMatchZindex(0));
+          this.chatScreen.animationView.fadeInRight(1200).then(this.changeChatZindex(1));
         }
         /* this.topTabs.state.tabsStyles.reverse(); */
         this.topTabs.clickFunction(index);
@@ -73,6 +81,7 @@ export default class MainAppScreen extends Component {
       }}
           >
             <SettingsScreen
+              switch={this.switchScreens(0)}
               move={this.moveToMainAppScreen}
               ref={(ref) => { this.settingsScreen = ref; }}
             />
@@ -97,18 +106,24 @@ export default class MainAppScreen extends Component {
           }}
             /> */}
             <Button
+              bordered
+              rounded
+              activeOpacity={1}
               onPress={this.moveToLogSignScreen}
               style={{
+                zIndex: 2,
             backgroundColor: '#21214C',
             alignSelf: 'center',
             marginTop: height - (height / 7),
             height: height / 14,
-            marginBottom: 3,
+            marginBottom: 10,
           }}
             >
               <Text
                 uppercase={false}
-                style={{ color: '#eee', fontWeight: '600', fontSize: GLOBAL.totalSize(2.35) }}
+                style={{
+ color: '#eee', fontWeight: '200', fontSize: GLOBAL.totalSize(1.50), textAlign: 'center',
+}}
               >{language.logOut}
               </Text>
             </Button>

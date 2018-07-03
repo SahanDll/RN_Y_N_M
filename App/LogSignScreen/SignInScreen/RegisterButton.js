@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { View } from 'react-native-animatable';
 import { Text, Spinner, Button } from 'native-base';
 import PropTypes from 'prop-types';
+import DeviceInfo from 'react-native-device-info';
+
+import { createUser } from '../../Service/ApiCalls/Register';
 
 export default class RegisterButton extends Component {
   constructor() {
@@ -9,12 +12,25 @@ export default class RegisterButton extends Component {
     this.state = {
       isRegistering: false,
       canRegister: false,
+      userName: '',
+      email: '',
+      password: '',
+      gcmToken: '',
+      uuid: '',
     };
   }
 
   updateCanRegister = (can) => {
     this.setState({ canRegister: can });
   };
+
+  updateData(u, e, p) {
+    this.setState({
+      userName: u, email: e, password: p,
+    });
+    this.state.uuid = DeviceInfo.getUniqueID();
+    this.state.gcmToken = DeviceInfo.getBuildNumber();
+  }
 
   registerUser = () => {
     if (!this.state.isRegistering) {
@@ -23,10 +39,21 @@ export default class RegisterButton extends Component {
       } else {
         this.setState({ isRegistering: true });
         setTimeout(() => {
-          GLOBAL.showToast(language.accountCreated);
-          this.props.switch(0);
-          this.props.clear();
-          this.setState({ isRegistering: false, canRegister: false });
+          createUser(
+            this.state.userName, this.state.password, this.state.email, this.state.gcmToken,
+            this.state.uuid,
+          )
+            .then((data) => {
+              if (data.status) {
+                GLOBAL.showToast(data.message);
+                this.props.switch(0);
+                this.props.clear();
+                this.setState({ isRegistering: false, canRegister: false });
+              } else {
+                this.setState({ isRegistering: false, canRegister: false });
+                GLOBAL.showToast(data.message);
+              }
+            });
         }, 1000);
       }
     }

@@ -56,6 +56,12 @@ export default class SignInScreen extends Component {
       this.state.inputs[0].state.value, this.state.inputs[1].state.value,
       this.state.inputs[2].state.value, this.state.inputs[3].state.value,
     );
+
+    this.registerButton.updateData(
+      this.state.inputs[0].state.value,
+      this.state.inputs[1].state.value,
+      this.state.inputs[2].state.value,
+    );
   };
 
   changeZindex() {

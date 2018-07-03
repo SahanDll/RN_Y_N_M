@@ -6,6 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import Email from '../InputComponents/Email';
 import Password from '../InputComponents/Password';
 import LoginButtons from './LoginButtons/LoginButtons';
+import { forgotPassword } from '../../Notification/PushNotifications';
 
 export default class LoginScreen extends Component {
   constructor() {
@@ -22,6 +23,7 @@ export default class LoginScreen extends Component {
   };
 
   updateCanLoginState = () => {
+    // isCorrect 0: not enter value   1: value available    2: value enterd and removed
     let canLogin = true;
     this.state.inputs.forEach((child) => {
       if (child.state.isCorrect !== 1) {
@@ -32,7 +34,7 @@ export default class LoginScreen extends Component {
       canLogin, this.state.inputs[0].state.value,
       this.state.inputs[1].state.value,
     );
-    this.loginButtons.loginButton.updateEmail(
+    this.loginButtons.loginButton.updateData(
       this.state.inputs[0].state.value,
       this.state.inputs[1].state.value,
     );
@@ -44,7 +46,8 @@ export default class LoginScreen extends Component {
     });
   };
 
-  forgotPassword = () => {
+  forgotPasswordLink = () => {
+    forgotPassword();
     console.warn('Forgot password clicked'); // eslint-disable-line
   };
 
@@ -69,7 +72,7 @@ export default class LoginScreen extends Component {
             ref={(ref) => { this.state.inputs[1] = ref; }}
           />
         </Form>
-        <TouchableOpacity onPress={this.forgotPassword} activeOpacity={0.5} style={{ marginTop: height / 25, alignItems: 'center' }}>
+        <TouchableOpacity onPress={this.forgotPasswordLink} activeOpacity={0.5} style={{ marginTop: height / 25, alignItems: 'center' }}>
           <Text style={GLOBAL.loginScreenStyle.remember}>{language.dontRemember}</Text>
         </TouchableOpacity>
         <LoginButtons

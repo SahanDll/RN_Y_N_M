@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Text, Item, Icon, Input, View } from 'native-base';
+import { Form, Text, Item, Icon, Input } from 'native-base';
+import { ScrollView, StyleSheet, TouchableOpacity, TouchableHighlight, View, Image, Alert, Modal, Button, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Animatable from 'react-native-animatable';
@@ -8,14 +9,20 @@ import TopTabs from '../TopTabs/TopTabs';
 import Email from '../InputComponents/Email';
 import Password from '../InputComponents/Password';
 
+const load = require('../../../assets/load.png');
+
 const hide = { from: { opacity: 0 }, to: { opacity: 0 } };
 export default class ChatScreen extends Component {
-
   constructor() {
     super();
     this.state = {
       inputs: [],
+      zIndex: 0,
     };
+  }
+
+  changeZindex(i) {
+    this.setState({ zIndex: i });
   }
 
   updateState = () => {
@@ -34,21 +41,17 @@ export default class ChatScreen extends Component {
           duration={0}
           ref={(ref) => { this.animationView = ref; }}
           style={{
-                  zIndex: this.state.zIndex, position: 'absolute', flex: 1, backgroundColor: 'transparent',
-              }}
+              zIndex: this.state.zIndex,
+              position: 'absolute',
+              flex: 1,
+              backgroundColor: 'transparent',
+              width: '100%',
+              height: '100%',
+          }}
         >
-          <Form style={GLOBAL.loginScreenStyle.form}>
-            <Email
-              changeFocus={this.changeInputFocus(0)}
-              update={this.updateState}
-              ref={(ref) => { this.state.inputs[0] = ref; }}
-            />
-            <Password
-              changeFocus={this.changeInputFocus(1)}
-              update={this.updateState}
-              ref={(ref) => { this.state.inputs[1] = ref; }}
-            />
-          </Form>
+          <View style={{ marginTop: height / 3, marginLeft: width / 4 }}>
+            <Image source={load} resizeMode="contain" />
+          </View>
         </Animatable.View>
       );
     }
