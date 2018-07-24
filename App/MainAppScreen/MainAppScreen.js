@@ -48,17 +48,18 @@ export default class MainAppScreen extends Component {
 
       if (this.topTabs.state.currentTabIndex !== index) {
         if (index === 0) {
-          this.settingsScreen.animationView.fadeInRight(1200).then(this.changeSettingZindex(1));
-          this.matchScreen.animationView.fadeOutLeft(600).then(this.changeMatchZindex(0));
-          this.chatScreen.animationView.fadeOutRight(600).then(this.changeChatZindex(0));
+          this.settingsScreen.animationView.fadeInRight(600).then(this.changeSettingZindex(1));
+          this.matchScreen.animationView.fadeOutLeft(1).then(this.changeMatchZindex(0));
+          this.chatScreen.animationView.fadeOutRight(1).then(this.changeChatZindex(0));
         } else if (index === 1) {
-          this.settingsScreen.animationView.fadeOutLeft(600).then(this.changeSettingZindex(0));
-          this.matchScreen.animationView.fadeInLeft(1200).then(this.changeMatchZindex(1));
-          this.chatScreen.animationView.fadeOutRight(600).then(this.changeChatZindex(0));
+          this.settingsScreen.animationView.fadeOutLeft(1).then(this.changeSettingZindex(0));
+          this.matchScreen.animationView.fadeInLeft(600).then(this.changeMatchZindex(1));
+          this.chatScreen.animationView.fadeOutRight(1).then(this.changeChatZindex(0));
         } else {
-          this.settingsScreen.animationView.fadeOutLeft(600).then(this.changeSettingZindex(0));
-          this.matchScreen.animationView.fadeOutRight(600).then(this.changeMatchZindex(0));
-          this.chatScreen.animationView.fadeInRight(1200).then(this.changeChatZindex(1));
+          this.settingsScreen.animationView.fadeOutLeft(1).then(this.changeSettingZindex(0));
+          this.matchScreen.animationView.fadeOutRight(1).then(this.changeMatchZindex(0));
+          this.chatScreen.animationView.fadeInRight(600).then(this.changeChatZindex(1));
+          this.chatScreen.disableImage();
         }
         /* this.topTabs.state.tabsStyles.reverse(); */
         this.topTabs.clickFunction(index);
@@ -77,7 +78,7 @@ export default class MainAppScreen extends Component {
             switch={this.switchScreens}
           />
           <View style={{
-        backgroundColor: appMainColor, flex: 1, alignItems: 'center', justifyContent: 'center',
+        backgroundColor: appMainColor, alignItems: 'center', justifyContent: 'center',
       }}
           >
             <SettingsScreen
@@ -105,7 +106,14 @@ export default class MainAppScreen extends Component {
             height: iconWidth * 0.86,
           }}
             /> */}
-            <Button
+            <View style={{
+ alignSelf: 'center',
+                marginTop: height - (height / 7),
+                height: height / 14,
+                marginBottom: 10,
+}}
+            />
+            {/*            <Button
               bordered
               rounded
               activeOpacity={1}
@@ -126,7 +134,7 @@ export default class MainAppScreen extends Component {
 }}
               >{language.logOut}
               </Text>
-            </Button>
+            </Button> */}
           </View>
         </KeyboardAwareScrollView>
       );

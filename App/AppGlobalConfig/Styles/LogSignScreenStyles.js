@@ -42,10 +42,10 @@ class LogSignScreenStyles {
           width, height: companyBannerHeight, justifyContent: 'center',
         },
         sample: {
-          alignItems: 'center', width: width / 2, height: height / 2,
+          alignItems: 'center', width: width / 2, height: height / 3,
         },
         samplebg: {
-          width: width / 2, height: height / 2, alignSelf: 'center',
+          width: width / 2, height: height / 3, alignSelf: 'center', marginTop: height / 10,
         },
       });
 

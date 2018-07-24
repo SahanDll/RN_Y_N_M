@@ -127,7 +127,7 @@ AnimatedTypingText.defaultProps =
     {
       text: 'Love finds a way.',
       TextColor: '#eee',
-      AnimatedTextSize: 25,
-      AnimatedTypingDuration: 200,
-      AnimatedBlinkingCursorDuration: 400,
+      AnimatedTextSize: 30,
+      AnimatedTypingDuration: 300,
+      AnimatedBlinkingCursorDuration: 600,
     };

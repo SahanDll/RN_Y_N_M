@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { Text, Spinner, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { authenticate, getTest } from '../../../Service/ApiCalls/Login';
-import { setAuthenticated } from '../../../AppGlobalConfig/Common';
+import {setAuthenticated, setProfileId, setUserName} from '../../../AppGlobalConfig/Common';
 
 export default class LoginButton extends Component {
   constructor() {
@@ -39,8 +39,10 @@ export default class LoginButton extends Component {
           authenticate(this.state.email, this.state.password)
             .then((data) => {
               if (data.status) {
-                GLOBAL.showToast(data.message);
+                GLOBAL.showToast(data.profileId);
                 setAuthenticated(true);
+                setProfileId(data.profileId);
+                setUserName(data.userName);
                 this.moveToMainAppScreen();
               } else {
                 GLOBAL.showToast(data.message);

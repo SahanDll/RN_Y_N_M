@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { Form, Text, Item, Icon, Input } from 'native-base';
-import { ScrollView, StyleSheet, TouchableOpacity, TouchableHighlight, View, Image, Alert, Modal, Button, Platform } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, TouchableHighlight, View, Image, Alert, Modal, Button, Platform, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Card } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
@@ -13,7 +13,7 @@ import Sample from '../Data/Sample';
 import Images from '../Image/Images';
 import Texts from '../Image/Texts';
 import Items from '../Image/Items';
-import { getAuthenticated } from '../../AppGlobalConfig/Common';
+import { getAuthenticated, isValidUserLogin } from '../../AppGlobalConfig/Common';
 
 const iconWidth = (width * 52) / 100;
 const iconImage = require('../../../assets/sample.png');
@@ -33,15 +33,12 @@ export default class MatchScreen extends Component {
     this.state = {
       inputs: [],
       zIndex: 1,
+      animating: true,
     };
   }
 
     moveToLogSignScreen = () => {
       Actions.pop({ refresh: { test: true } });
-    };
-
-    resetItems = () => {
-      this.ite.resetImages();
     };
 
     changeZindex(i) {
@@ -57,6 +54,18 @@ export default class MatchScreen extends Component {
             this.state.inputs[index+1].state.inputRef._root.focus(); // eslint-disable-line
       }
     };
+
+    componentDidMount() {
+      setTimeout(() => {
+        this.setState({ animating: false });
+      }, 5000);
+    }
+
+    componentWillUnmount() {
+      setTimeout(() => {
+        GLOBAL.showToast('Match Screen pop');
+      }, 5000);
+    }
 
     render() {
       if (getAuthenticated()) {
@@ -84,8 +93,29 @@ export default class MatchScreen extends Component {
               {/*            <Card title="Jenny">
                     <Sample />
                   </Card> */}
-              <Items ref={(ref) => { this.ite = ref; }} />
+              <View style={{ height: height / 1.5 }}>
+                {!this.state.animating ? <Items ref={(ref) => { this.ite = ref; }} /> : null}
+              </View>
+              <View style={{
+                  alignSelf: 'center',
+                    marginTop: 10,
+                  height: 50,
+                  width: 50,
+                }}
+              >
+                <ActivityIndicator
+                  style={{
+                      alignSelf: 'center',
+                            height: 10,
+                        }}
+                  animating={this.state.animating}
+                  color={['#D7FFFE']}
+                  thickness={10}
+                  size={100}
+                />
+              </View>
             </LinearGradient>
+
           </Animatable.View>
         );
       }
@@ -101,19 +131,39 @@ export default class MatchScreen extends Component {
                   zIndex: this.state.zIndex,
                   position: 'absolute',
                   flex: 1,
-                  backgroundColor: 'transparent',
+                  backgroundColor: 'white',
                   width: '100%',
                   height: '100%',
               }}
         >
-          <TouchableOpacity
-            onPress={this.moveToLogSignScreen}
+          <View style={{ height: height / 1.5 }}>
+            <TouchableOpacity
+              onPress={this.moveToLogSignScreen}
+            >
+              <View style={{ marginTop: height / 4, marginLeft: width / 5 }}>
+                {!this.state.animating ? <Image source={logreq} resizeMode="contain" /> : null}
+              </View>
+            </TouchableOpacity >
+          </View>
+          <View style={{
+                alignSelf: 'center',
+                marginTop: 10,
+                height: 50,
+                width: 50,
+            }}
           >
-            <View style={{ marginTop: height / 4, marginLeft: width / 5 }}>
-              <Image source={logreq} resizeMode="contain" />
-            </View>
-          </TouchableOpacity >
-
+            <ActivityIndicator
+              style={{
+                        alignSelf: 'center',
+                        height: 10,
+                    }}
+              animating={this.state.animating}
+              duration={5000}
+              color={['#537895']}
+              thickness={2}
+              size={100}
+            />
+          </View>
         </Animatable.View>
       );
     }

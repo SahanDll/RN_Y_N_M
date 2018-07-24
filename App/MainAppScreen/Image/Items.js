@@ -19,8 +19,8 @@ let images = [];
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: 0,
+    backgroundColor: 'transparent',
   },
   listItem: {
     alignItems: 'center',
@@ -96,6 +96,10 @@ export default class Items extends Component {
       GLOBAL.showToast('Data Reset');
     };
 
+    componentWillUnmount() {
+      this.resetImages();
+    }
+
     handleScroll = () => {
       const { currentlyOpenSwipeable } = this.state;
 
@@ -122,7 +126,7 @@ export default class Items extends Component {
       };
 
       return (
-        <ScrollView onScroll={this.handleScroll} style={styles.container}>
+        <View onScroll={this.handleScroll} style={styles.container}>
           <View style={styles.MainContainer}>
             <Modal
               transparent
@@ -159,7 +163,7 @@ export default class Items extends Component {
 
           {/*          <Example2 {...itemProps} />
           <Example3 {...itemProps} /> */}
-        </ScrollView>
+        </View>
       );
     }
 }

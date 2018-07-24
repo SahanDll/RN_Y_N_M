@@ -37,13 +37,14 @@ export default class Sample extends Component {
             style={companyBannerStyle.samplebg}
           >
             <LinearGradient colors={this.state.gradient} />
-            <Image source={load} resizeMode="contain" style={companyBannerStyle.sample} />
+            <Image source={load} resizeMode="center" style={companyBannerStyle.sample} />
           </ImageBackground>
           <View>
             <Text style={{
                             color: this.props.color,
                             backgroundColor: 'transparent',
                             textAlign: 'center',
+                            marginTop: 20,
                         }}
             >No Matching Profiles Found
             </Text>
@@ -56,17 +57,18 @@ export default class Sample extends Component {
       <View>
         <ImageBackground
           source={bgImage}
-          resizeMode="center"
+          resizeMode="cover"
           style={companyBannerStyle.samplebg}
         >
           <LinearGradient colors={this.state.gradient} />
-          <Image source={this.props.image} resizeMode="contain" style={companyBannerStyle.sample} />
+          <Image source={this.props.image} resizeMode="stretch" style={companyBannerStyle.sample} />
         </ImageBackground>
         <View>
           <Text style={{
           color: this.props.color,
           backgroundColor: 'transparent',
           textAlign: 'center',
+          marginTop: 20,
 }}
           >{this.props.action}
           </Text>
